@@ -20,12 +20,7 @@ const PageNotFound = () => {
             The page you're looking for doesn't exist or may have been moved.
           </p>
 
-          <Link
-            to="/todo"
-            className="inline-flex w-full items-center justify-center rounded-lg bg-indigo-600 text-white text-sm font-medium py-2.5 hover:bg-indigo-700 active:bg-indigo-800 transition-colors"
-          >
-            Back to your tasks
-          </Link>
+         
         </div>
       </div>
     </div>
