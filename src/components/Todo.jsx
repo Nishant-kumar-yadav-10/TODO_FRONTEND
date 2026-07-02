@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from '../api/axios'
+import { useNavigate } from 'react-router-dom'
 
 const Todo = () => {
   const [todos, setTodos] = useState([])
@@ -49,22 +50,46 @@ const Todo = () => {
     }
   }
 
+const handleLogout = async () => {
+  try {
+    await api.post("/api/auth/logout");
+
+    localStorage.removeItem("token");
+
+    navigate("/login");
+  } catch (error) {
+    console.log(error);
+  }
+};
   const remaining = todos.filter((t) => !t.completed).length
 
   return (
     <div className="min-h-screen bg-slate-50 px-4 py-12">
       <div className="w-full max-w-md mx-auto">
         {/* Header */}
-        <div className="mb-6">
-          <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-white font-semibold text-sm mb-3">
-            ✓
+        <div className="mb-6 flex items-start justify-between">
+          <div>
+            <div className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-indigo-600 text-white font-semibold text-sm mb-3">
+              ✓
+            </div>
+            <h1 className="text-2xl font-semibold text-slate-900">Your tasks</h1>
+            <p className="mt-1 text-sm text-slate-500">
+              {todos.length === 0
+                ? 'Nothing on your list yet'
+                : `${remaining} of ${todos.length} remaining`}
+            </p>
           </div>
-          <h1 className="text-2xl font-semibold text-slate-900">Your tasks</h1>
-          <p className="mt-1 text-sm text-slate-500">
-            {todos.length === 0
-              ? 'Nothing on your list yet'
-              : `${remaining} of ${todos.length} remaining`}
-          </p>
+
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex-shrink-0 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+            Logout
+          </button>
         </div>
 
         {/* Card */}
